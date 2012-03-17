@@ -44,22 +44,27 @@ function run_or_raise(cmd, properties)
     local n = 0
     for i, c in pairs(clients) do
         -- make an array of matched clients
-        if match(properties, c) then
+        if match(properties, c)
+        then
             n = n + 1
             matched_clients[n] = c
-            if c == focused then
+            if c == focused
+            then
                 findex = n
             end
         end
     end
-    if n > 0 then
+    if n > 0
+    then
         local c = matched_clients[1]
         -- if the focused window matched switch focus to next in list
-        if 0 < findex and findex < n then
+        if 0 < findex and findex < n
+        then
             c = matched_clients[findex + 1]
         end
         local ctags = c:tags()
-        if table.getn(ctags) == 0 then
+        if table.getn(ctags) == 0
+        then
             -- ctags is empty, show client on current tag
             local curtag = awful.tag.selected()
             awful.client.movetotag(curtag, c)
@@ -78,12 +83,50 @@ end
 -- Return true if all paris in table1 are present in table2
 function match (table1, table2)
     for k, v in pairs(table1) do
-        if table2[k] ~= v and not table2[k]:find(v) then
+        if table2[k] ~= v and not table2[k]:find(v)
+        then
             return false
         end
     end
     return true
 end
 
+-- {{{ Run program once
 
+local function processwalker()
+    local function yieldprocess()
+        for dir in lfs.dir("/proc") do
+            -- All directories in /proc containing a number, represent a process
+            if tonumber(dir) ~= nil
+            then
+                local f, err = io.open("/proc/"..dir.."/cmdline")
+                if f 
+                then
+                    local cmdline = f:read("*all")
+                    f:close()
+                    if cmdline ~= ""
+                    then
+                        coroutine.yield(cmdline)
+                    end
+                end
+            end
+        end
+    end
+    return coroutine.wrap(yieldprocess)
+end
 
+function run_once(process, cmd)
+    assert(type(process) == "string")
+    local regex_killer = {
+        ["+"] = "%+", ["-"] = "%-",
+        ["*"] = "%*", ["?"] = "%?" }
+    
+    for p in processwalker() do
+        if p:find(process:gsub("[-+*?]", regex_killer))
+        then
+            return
+        end
+    end
+    return awful.util.spawn(cmd or process)
+end
+--- }}}
