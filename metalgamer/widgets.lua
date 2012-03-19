@@ -21,6 +21,7 @@ function deluge(args)
     local port = args.port or "58846"
     local username = args.username or ""
     local password = args.password or ""
+    local prefix = args.prefix or "Deluge: "
 
     local mydeluge = wibox.widget.textbox()
     local mydelugeupdate = function()
@@ -55,7 +56,7 @@ function deluge(args)
             total = total + 1
         end
 
-        mydeluge:set_text(string.format("D: %d - S: %d - Q: %d - P: %d - T: %d", downloading, seeding, queued, paused, total))
+        mydeluge:set_text(string.format("%s D: %d - S: %d - Q: %d - P: %d - T: %d", prefix, downloading, seeding, queued, paused, total))
 
     end
     mydelugeupdate()
@@ -72,6 +73,7 @@ function intip(args)
     local args = args or {}
     local refresh_timeout = args.timeout or 600
     local interface = args.interface or "eth0"
+    local prefix = args.prefix or "Int. IP: "
 
     local myintip = wibox.widget.textbox()
     local myintipupdate = function()
@@ -87,7 +89,8 @@ function intip(args)
 			ip = string.sub(ret, i, j)
 		end
         
-        myintip:set_text(ip)
+        local text = prefix .. ip
+        myintip:set_text(text)
     end
     myintipupdate()
 
@@ -103,6 +106,7 @@ function extip(args)
     local args = args or {}
     local interface = args.interface or nil
     local refresh_timeout = args.timeout or 600
+    local prefix = args.prefix or "Ext. IP: "
 
     local myextip = wibox.widget.textbox()
     local myextipupdate = function()
@@ -116,7 +120,8 @@ function extip(args)
 			f:close()
 		end
 		
-        myextip:set_text(ret)
+        local text = prefix .. ret
+        myextip:set_text(text)
     end
     myextipupdate()
 
@@ -132,6 +137,7 @@ function runningprocesses(args)
     local args = args or {}
     local refresh_timeout = args.timeout or 5
     local user = args.user or ""
+    local prefix = args.prefix or "Running processes: "
 
     local myrp = wibox.widget.textbox()
     local myrpupdate = function()
@@ -144,7 +150,8 @@ function runningprocesses(args)
             processes = processes + 1
         end
 
-        myrp:set_text(string.format("%d", processes))
+        local text = prefix .. string.format("%d", processes)
+        myrp:set_text(text)
     end
     myrpupdate()
 
@@ -155,27 +162,29 @@ function runningprocesses(args)
     return myrp
 end
 
---Cpufreq
-function cpufreq(args)
+-- Governor
+function governor(args)
 	local args = args or {}
 	local cpu = args.cpu or "cpu0"
 	local refresh_timeout = args.timeout or 61
-	
-	local mycpufreq = wibox.widget.textbox()
-	local mycpufrequpdate = function()
+    local prefix = args.prefix or "cpu0: "
+
+	local mygovernor = wibox.widget.textbox()
+	local mygovernorupdate = function()
 		local f = io.open("/sys/devices/system/cpu/"..cpu.."/cpufreq/scaling_governor")
 		local governor = f:read("*all")
 		f:close()
-	
-		mycpufreq:set_text(governor)
+	    
+        local text = prefix .. governor
+		mygovernor:set_text(text)
 	end
-	mycpufrequpdate()
+	mygovernorupdate()
 	
-	local mycpufreqtimer = timer({ timeout = refresh_timeout })
-	mycpufreqtimer:connect_signal("timeout", mycpufrequpdate)
-	mycpufreqtimer:start()
+	local mygovernortimer = timer({ timeout = refresh_timeout })
+	mygovernortimer:connect_signal("timeout", mygovernorupdate)
+	mygovernortimer:start()
 	
-	return mycpufreq
+	return mygovernor
 end
 
 --Mpdplay
@@ -309,6 +318,8 @@ function mpdvolume(args)
 end
 
 -- Battery
+-- Taken from vain.widgets and updated to use it with awesome current git
+-- version
 function battery(args)
     local args = args or {}
     local bat = args.battery or "BAT0"
