@@ -2,6 +2,12 @@
 awesome-metalgamer
 ==================
 
+This repository contains mostly widgets I wrote for the `Awesome Window Manager <http://awesome.naquadah.org/>`_.
+
+All of this is `GPL3+ <http://www.gnu.org/licenses/gpl-3.0.txt>`_.
+
+Note: I use the current git version of awesome.
+
 How to install
 --------------
 
@@ -67,8 +73,8 @@ Widgets
 
 Each function returns a widget that can be used in wiboxes.
 
-Deluge
-======
+Deluge:
+=======
 
 Shows the torrents which are currently in deluge. Using \`deluge-console`.
 
@@ -106,8 +112,8 @@ Example:
     Deluge: D: 2 - S: 1 - Q: 0 - P: 2 - T: 5
 
 
-Internal IP
-===========
+Internal IP:
+============
 
 Shows the IP address of a given network interface. Gathers information from  \`ip addr show`
 
@@ -214,8 +220,8 @@ Example:
     Running processes: 27
 
 
-Governor
-========
+Governor:
+=========
 
 Shows the current governor of a given cpu core. You need to have cpufreq installed. Reads it directly from \`/sys/devices/cpu/cpu0/cpufreq/scaling_governor`
 
