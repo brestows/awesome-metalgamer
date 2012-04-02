@@ -183,7 +183,7 @@ Example:
 
     wlan0 ext. ip: 94.252.111.236
 
-Attention: This widget will make your startup slower due it needs to connect to an server.
+**Attention:** This widget will make your startup slower due it needs to connect to an server.
 
 Running processes:
 ==================
