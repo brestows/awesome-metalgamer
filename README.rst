@@ -223,7 +223,7 @@ Returns a textbox with the following information.
 Governor:
 =========
 
-Shows the current governor of a given cpu core. You need to have cpufreq installed. Reads it directly from \`/sys/devices/cpu/cpu0/cpufreq/scaling_governor`
+Shows the current scaling governor of a given cpu core. You need to have cpufreq installed. Reads it directly from \`/sys/devices/cpu/cpu0/cpufreq/scaling_governor`
 
 ::
 
