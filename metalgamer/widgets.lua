@@ -98,6 +98,11 @@ function intip(args)
     myintiptimer:connect_signal("timeout", myintipupdate)
     myintiptimer:start()
 
+    myintip:buttons(awful.util.table.join(
+                awful.button({}, 1, function() myintipupdate() end)
+                )
+            )
+
     return myintip
 end
 
@@ -128,6 +133,12 @@ function extip(args)
     local myextiptimer = timer({ timeout = refresh_timeout })
     myextiptimer:connect_signal("timeout", myextipupdate)
     myextiptimer:start()
+
+    myextip:buttons(awful.util.table.join(
+                awful.button({}, 1, function()
+                    myextipupdate() end)
+                )
+            ) 
 
     return myextip
 end
@@ -184,6 +195,12 @@ function governor(args)
 	mygovernortimer:connect_signal("timeout", mygovernorupdate)
 	mygovernortimer:start()
 	
+    mygovernor:buttons(awful.util.table.join(
+                awful.button({}, 1, function()
+                    mygovernorupdate() end)
+                )
+            )
+
 	return mygovernor
 end
 
@@ -380,6 +397,12 @@ function battery(args)
     local mybatterytimer = timer({ timeout = refersh_timeout })
     mybatterytimer:connect_signal("timeout", mybatteryupdate)
     mybatterytimer:start()
+
+    mybattery:buttons(awful.util.table.join(
+                awful.button({}, 1, function()
+                    mybatteryupdate() end)
+                )
+            )
 
     return mybattery
 end
