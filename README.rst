@@ -45,10 +45,18 @@ For personal use, you have to put \`metalgamer` into your config foder
     │   └── widgets.lua
     └── rc.lua
 
+You have to install the luafilesystem.
+
+On Archlinux:
+
+::
+
+    # pacman -S luafilesystem
+
 Using it
 --------
 
-You have to including this module into your rc.lua
+You have to include this module into your rc.lua
 
 ::
 
