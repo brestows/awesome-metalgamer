@@ -80,14 +80,14 @@ function intip(args)
         local f = io.popen("ip addr show "..interface)
         local ret = f:read("*all")
         f:close()
-		
-		local i, j = string.find(ret, "%d+%.%d+%.%d+%.%d+")
-		
-		if i == nil then
-			ip = "N/A"
-		else
-			ip = string.sub(ret, i, j)
-		end
+        
+        local i, j = string.find(ret, "%d+%.%d+%.%d+%.%d+")
+        
+        if i == nil then
+            ip = "N/A"
+        else
+            ip = string.sub(ret, i, j)
+        end
         
         local text = prefix .. ip
         myintip:set_text(text)
@@ -115,16 +115,16 @@ function extip(args)
 
     local myextip = wibox.widget.textbox()
     local myextipupdate = function()
-		if interface == nil then
-			local f = io.popen("curl ifconfig.me")
-			local ret = f:read("*all")
-			f:close()
-		else
-			local f = io.popen("curl --interface "..interface.." ifconfig.me")
-			local ret = f:read("*all")
-			f:close()
-		end
-		
+        if interface == nil then
+            local f = io.popen("curl ifconfig.me")
+            local ret = f:read("*all")
+            f:close()
+        else
+            local f = io.popen("curl --interface "..interface.." ifconfig.me")
+            local ret = f:read("*all")
+            f:close()
+        end
+        
         local text = prefix .. ret
         myextip:set_text(text)
     end
@@ -175,33 +175,33 @@ end
 
 -- Governor
 function governor(args)
-	local args = args or {}
-	local cpu = args.cpu or "cpu0"
-	local refresh_timeout = args.timeout or 61
+    local args = args or {}
+    local cpu = args.cpu or "cpu0"
+    local refresh_timeout = args.timeout or 61
     local prefix = args.prefix or "cpu0: "
 
-	local mygovernor = wibox.widget.textbox()
-	local mygovernorupdate = function()
-		local f = io.open("/sys/devices/system/cpu/"..cpu.."/cpufreq/scaling_governor")
-		local governor = f:read("*all")
-		f:close()
-	    
+    local mygovernor = wibox.widget.textbox()
+    local mygovernorupdate = function()
+        local f = io.open("/sys/devices/system/cpu/"..cpu.."/cpufreq/scaling_governor")
+        local governor = f:read("*all")
+        f:close()
+        
         local text = prefix .. governor
-		mygovernor:set_text(text)
-	end
-	mygovernorupdate()
-	
-	local mygovernortimer = timer({ timeout = refresh_timeout })
-	mygovernortimer:connect_signal("timeout", mygovernorupdate)
-	mygovernortimer:start()
-	
+        mygovernor:set_text(text)
+    end
+    mygovernorupdate()
+    
+    local mygovernortimer = timer({ timeout = refresh_timeout })
+    mygovernortimer:connect_signal("timeout", mygovernorupdate)
+    mygovernortimer:start()
+    
     mygovernor:buttons(awful.util.table.join(
                 awful.button({}, 1, function()
                     mygovernorupdate() end)
                 )
             )
 
-	return mygovernor
+    return mygovernor
 end
 
 --Mpdplay
