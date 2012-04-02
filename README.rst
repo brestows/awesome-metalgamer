@@ -101,7 +101,7 @@ Returns a textbox with the following information.
     seeding torrents - Q: Current amount of queued torrents - P: Current
     amount of paused torrents - T: Total of current torrents
 
-Example:
+**Example:**
 
 ::
     
@@ -137,7 +137,7 @@ Returns a textbox with the following information.
 
 A click with the left mouse button on the widget will update the widget.
 
-Example:
+**Example:**
 
 ::
 
@@ -173,7 +173,7 @@ Returns a textbox with the following information.
 
 A click with the left mouse button on the widget will update the widget.
     
-Example:
+**Example:**
 
 ::
 
@@ -209,7 +209,7 @@ Returns a textbox with the following information.
 
     PREFIX Current amount of running processes
 
-Example:
+**Example:**
 
 ::
 
@@ -243,7 +243,7 @@ Returns a textbox with the following information.
 
     PREFIX Scaling governor
 
-Example:
+**Example:**
 
 ::
     
@@ -349,7 +349,7 @@ Return a textbox with the following information:
 
     Current mpd volume%
 
-Example:
+**Example:**
 
 ::
     
@@ -390,7 +390,7 @@ Status can be the following:
     - c = charging
     - u = unkown
 
-Example:
+**Example:**
 
 ::
 
