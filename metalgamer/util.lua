@@ -10,6 +10,12 @@ local client = client
 local io = io
 local screen = screen
 local math = math
+local lfs = lfs
+local type = type
+local assert = assert
+local coroutine = coroutine
+local tonumber = tonumber
+
 
 module("metalgamer.util")
 

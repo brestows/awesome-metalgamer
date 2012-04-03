@@ -13,6 +13,9 @@ local metalgamer = metalgamer
 
 module("metalgamer.widgets")
 
+terminal = ""
+browser = ""
+
 -- Deluge widget
 function deluge(args)
     local args = args or {}
@@ -65,6 +68,12 @@ function deluge(args)
     mydelugetimer:connect_signal("timeout", mydelugeupdate)
     mydelugetimer:start()
 
+    mydeluge:buttons(awful.util.table.join(
+                awful.button({}, 1, function () awful.util.spawn("deluge-console pause *", false) end),
+                awful.button({}, 3, function () awful.util.spawn("deluge-console resume *", false) end)
+                )
+            )
+    
     return mydeluge
 end
 
@@ -135,8 +144,8 @@ function extip(args)
     myextiptimer:start()
 
     myextip:buttons(awful.util.table.join(
-                awful.button({}, 1, function()
-                    myextipupdate() end)
+                awful.button({}, 1, function() myextipupdate() end),
+                awful.button({}, 3, function() awful.util.spawn(browser .. " http://ifconfig.me", false) end)
                 )
             ) 
 
@@ -169,6 +178,11 @@ function runningprocesses(args)
     local myrptimer = timer({ timeout = refresh_timeout })
     myrptimer:connect_signal("timeout", myrpupdate)
     myrptimer:start()
+
+    myrp:buttons(awful.util.table.join(
+                awful.button({}, 1, function() awful.util.spawn(terminal .. " -e htop") end)
+                )
+            )
 
     return myrp
 end

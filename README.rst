@@ -6,12 +6,12 @@ This repository contains mostly widgets I wrote for the `Awesome Window Manager 
 
 All of this is `GPL3+ <http://www.gnu.org/licenses/gpl-3.0.txt>`_.
 
-Note: I use the current git version of awesome.
+Note: I use the current git master version of awesome. So this won't work with awesome 3.4.
 
 How to install
 --------------
 
-For system wide use, you have to put the directory \`metalgamer` into /usr/share/awesome/lib/
+For system wide use, you have to put the directory `metalgamer` into `/usr/share/awesome/lib/`.
 
 ::
     
@@ -36,7 +36,7 @@ For system wide use, you have to put the directory \`metalgamer` into /usr/share
     └── wibox
         ├── ..
 
-For personal use, you have to put \`metalgamer` into your config foder
+For personal use, you have to put the directory `metalgamer` into your config folder, normally `/home/YOUR-USERNAME/.config/awesome`.
 
 ::
     
@@ -51,7 +51,8 @@ For personal use, you have to put \`metalgamer` into your config foder
     │   └── widgets.lua
     └── rc.lua
 
-You have to install the luafilesystem.
+You have to install the luafilesystem, because the `run_once` function I use
+is completly written in Lua.
 
 On Archlinux:
 
@@ -62,21 +63,30 @@ On Archlinux:
 Using it
 --------
 
-You have to include this module into your rc.lua
+You have to include this module into your `rc.lua`
 
 ::
 
     require("metalgamer")
+    metalgamer.widgets.terminal = "urxvtc"
+    metalgamer.widgets.browser = "firefox"
+
+Some widgets require a terminal or a browser, so you need to set them as well.
 
 Widgets
 -------
 
 Each function returns a widget that can be used in wiboxes.
 
+**In a nutshell:**
+
+You need to write the code snippets in your `rc.lua` and adding these to your
+wiboxes. For more clarity look into my `rc.lua` `here <https://github.com/the-metalgamer/Evolution-Dotfile/blob/master/.config/awesome/rc.lua>`_.
+
 Deluge:
 =======
 
-Shows the torrents which are currently in deluge. Using \`deluge-console`.
+Shows the torrents which are currently in deluge. Using `deluge-console`.
 
 ::
 
@@ -101,6 +111,12 @@ Returns a textbox with the following information.
     seeding torrents - Q: Current amount of queued torrents - P: Current
     amount of paused torrents - T: Total of current torrents
 
+A click on the widget will call the following:
+
+    - Left mouse button: `deluge-console pause \*`
+    - Right mouse button: `deluge-console resume \*`
+    
+
 **Example:**
 
 ::
@@ -115,7 +131,7 @@ Returns a textbox with the following information.
 Internal IP:
 ============
 
-Shows the IP address of a given network interface. Gathers information from  \`ip addr show`
+Shows the IP address of a given network interface. Gathers information from  `ip addr show`
 
 ::
 
@@ -150,7 +166,7 @@ A click with the left mouse button on the widget will update the widget.
 External IP:
 ============
 
-Shows the external ip. Gathers information from ifconfig.me using curl
+Shows the external ip. Gathers information from http://ifconfig.me using `curl`
 
 ::
 
@@ -171,7 +187,10 @@ Returns a textbox with the following information.
     PREFIX external ip
 
 
-A click with the left mouse button on the widget will update the widget.
+A click on the widget will call the following:
+
+    - Left mouse button: Update the widget
+    - Right mouse button: Will open http://ifconfig.me in your `browser`
     
 **Example:**
 
@@ -188,7 +207,7 @@ A click with the left mouse button on the widget will update the widget.
 Running processes:
 ==================
 
-Shows the current running processes.
+Shows the current running processes, using `ps`.
 
 ::
 
@@ -209,6 +228,9 @@ Returns a textbox with the following information.
 
     PREFIX Current amount of running processes
 
+A click with the left mouse button on the widget will call `htop` in your
+`terminal`
+
 **Example:**
 
 ::
@@ -223,7 +245,7 @@ Returns a textbox with the following information.
 Governor:
 =========
 
-Shows the current scaling governor of a given cpu core. You need to have cpufreq installed. Reads it directly from \`/sys/devices/cpu/cpu0/cpufreq/scaling_governor`
+Shows the current scaling governor of a given cpu core. You need to have `cpufreq` installed. Reads it directly from `/sys/devices/cpu/cpu0/cpufreq/scaling_governor`
 
 ::
 
@@ -243,6 +265,8 @@ Returns a textbox with the following information.
 
     PREFIX Scaling governor
 
+A left mouse button click on the widget will update the widget.
+
 **Example:**
 
 ::
@@ -257,7 +281,7 @@ Returns a textbox with the following information.
 MPD Play button:
 ================
 
-Shows ▶ which will call \`mpc toggle` on left mouse button click.
+Shows ▶ which will call `mpc toggle` on left mouse button click.
 
 ::
 
@@ -269,8 +293,8 @@ MPD Pause button:
 
 Shows ❚❚ which will call on click the following:
 
-    - Left click: \`mpc pause`
-    - Right click: \`mpc stop`
+    - Left mouse button click: `mpc pause`
+    - Right mouse button click: `mpc stop`
 
 ::
 
@@ -279,7 +303,7 @@ Shows ❚❚ which will call on click the following:
 MPD Next button:
 ================
 
-Shows ⇥ which will call \`mpc next` on left mouse button click.
+Shows ⇥ which will call `mpc next` on left mouse button click.
 
 ::
     
@@ -288,7 +312,7 @@ Shows ⇥ which will call \`mpc next` on left mouse button click.
 MPD Prev button:
 ================
 
-Shows ⇤ which will call \`mpc prev` on left mouse button click.
+Shows ⇤ which will call `mpc prev` on left mouse button click.
 
 ::
 
@@ -299,9 +323,9 @@ MPD Volume up button:
 
 Shows + which will call on click the following:
 
-    - Left click: \`mpc volume +1`
-    - Right click: \`mpc volume 100`
-    - Mousewheel up: \`mpc volume +1`
+    - Left click: `mpc volume +1`
+    - Right click: `mpc volume 100`
+    - Mousewheel up: `mpc volume +1`
 
 ::
 
@@ -313,9 +337,9 @@ MPD Volume down button:
 
 Shows - which will call on click the following:
 
-    - Left click: \`mpc volume -1`
-    - Right click: \`mpc volume 50`
-    - Mousewheel down: \`mpc volume -1`
+    - Left click: `mpc volume -1`
+    - Right click: `mpc volume 50`
+    - Mousewheel down: `mpc volume -1`
 
 ::
 
@@ -325,7 +349,7 @@ Shows - which will call on click the following:
 MPD Volume:
 ===========
 
-Shows the current mpd volume. Gathers information using \`mpc volume`
+Shows the current mpd volume. Gathers information using `mpc volume`
 
 ::
 
@@ -340,8 +364,8 @@ The function takes a table as an optional argument. That table may contain:
 
 A click on the widget will call the following:
 
-    - Mousewheel up: \`mpc volume +1`
-    - Mousewheel down: \`mpc volume -1`
+    - Mousewheel up: `mpc volume +1`
+    - Mousewheel down: `mpc volume -1`
 
 Return a textbox with the following information:
 
@@ -364,7 +388,7 @@ Battery:
 
 This widget is taken from `awesome-vain <https://github.com/vain/awesome-vain>`_, but I updated it so it can be used with the current git version of awesome.
 
-Show the remaining time and capacity of your laptop battery. Uses the \`/sys` filesytem
+Show the remaining time and capacity of your laptop battery. Uses the `/sys` filesytem
 
 ::
 
@@ -389,6 +413,8 @@ Status can be the following:
     - d = discharging
     - c = charging
     - u = unkown
+
+A left mouse button click on the widget will update the widget.
 
 **Example:**
 
