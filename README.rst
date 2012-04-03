@@ -113,8 +113,8 @@ Returns a textbox with the following information.
 
 A click on the widget will call the following:
 
-    - Left mouse button: ``deluge-console pause \*``
-    - Right mouse button: ``deluge-console resume \*``
+    - Left mouse button: ``deluge-console pause *``
+    - Right mouse button: ``deluge-console resume *``
     
 
 **Example:**
