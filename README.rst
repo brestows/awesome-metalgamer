@@ -439,7 +439,7 @@ Read the first line of a file or return nil.
 Run or raise:
 =============
 
-This function is taken from official `awesome wiki/Run_or_raise <http://awesome.naquadah.org/wiki/Run_or_raise>`_.
+This function is taken from the official `awesome wiki/Run_or_raise <http://awesome.naquadah.org/wiki/Run_or_raise>`_.
 
 Spawn cmd if no client can be found matching properties.
 If such a client can be found, pop first tag it is visible, and give it focus.
@@ -447,8 +447,34 @@ If such a client can be found, pop first tag it is visible, and give it focus.
 Run once:
 =========
 
-This function is taken from official `awesome wiki/autostart <http://awesome.naquadah.org/wiki/Autostart>`_.
+This function is taken from the official `awesome wiki/Autostart <http://awesome.naquadah.org/wiki/Autostart>`_.
 
 You need to have luafilesystem installed.
 
 Run program once.
+
+Random wallpaper:
+=================
+
+This function is taken from the official `awesome wiki/Cycling Random Wallpaper
+Or Xscreensaver
+<http://awesome.naquadah.org/wiki/Cycling_Random_Wallpaper_Or_Xscreensaver>`_,
+but updated it to use it with the current awesome master branch git version and
+replaced ``os.execute()`` with ``awful.util.spawn()``. Also the wallpaper will
+change in the intervall of 5 to 10 minutes.
+
+To use it you have to define your wallpaper directory in your ``rc.lua``.
+
+::
+
+    metalgamer.util.wallpaperdir = "/home/dennis/.config/awesome/wallpapers"
+
+And then you have to call the function. You can put this anywhere in your
+``rc.lua``. It is the best if you put this at the end of your ``rc.lua``
+
+::
+
+    metalgamer.util.randomwallpaper()
+
+
+For more clarity look into my ``rc.lua`` `here <https://github.com/the-metalgamer/Evolution-Dotfile/blob/master/.config/awesome/rc.lua>`_.

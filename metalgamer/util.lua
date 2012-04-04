@@ -15,9 +15,13 @@ local type = type
 local assert = assert
 local coroutine = coroutine
 local tonumber = tonumber
-
+local os = os
+local timer = timer
 
 module("metalgamer.util")
+
+
+wallpaperdir = ""
 
 -- Read the first line of a file or return nil
 -- Taken from vain.util
@@ -136,3 +140,44 @@ function run_once(process, cmd)
     return awful.util.spawn(cmd or process)
 end
 --- }}}
+
+-- Random Wallpaper
+
+function randomwallpaper()
+    
+    -- seed and "pop a few"
+    math.randomseed( os.time() )
+    for i=1,1000 do
+        tmp=math.random(0,1000)
+    end
+
+    x = 0
+
+    -- setup the timer
+    
+    randomwallpapertimer = timer({ timeout = x })
+    randomwallpapertimer:connect_signal("timeout",
+            function()
+            
+                -- tell awsetbg to randomly choose a wallpaper from your
+                -- wallpaper directory
+                
+                awful.util.spawn("awsetbg -F -r " .. wallpaperdir, false)
+                
+                --stop the time (we don't need multiple instances running at
+                    --the same time)
+                randomwallpapertimer:stop()
+                
+                -- define the intervall in which the next wallpaper change
+                -- should occur in seconds
+                -- in this casew anytime between 5 and 10 minutes
+                x = math.random(300,600)
+                
+                randomwallpapertimer.timeout = x
+                
+                randomwallpapertimer:start()
+                end
+    )
+    randomwallpapertimer:start()
+end
+
