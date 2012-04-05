@@ -460,21 +460,27 @@ This function is taken from the official `awesome wiki/Cycling Random Wallpaper
 Or Xscreensaver
 <http://awesome.naquadah.org/wiki/Cycling_Random_Wallpaper_Or_Xscreensaver>`_,
 but updated it to use it with the current awesome master branch git version and
-replaced ``os.execute()`` with ``awful.util.spawn()``. Also the wallpaper will
-change in the intervall of 5 to 10 minutes.
+replaced ``os.execute()`` with ``awful.util.spawn()``.
 
-To use it you have to define your wallpaper directory in your ``rc.lua``.
-
-::
-
-    metalgamer.util.wallpaperdir = "/home/dennis/.config/awesome/wallpapers"
-
-And then you have to call the function. You can put this anywhere in your
-``rc.lua``. It is the best if you put this at the end of your ``rc.lua``
+To use it you have to call the function in your ``rc.lua`` with an table as
+argument. In that table you have to define at least your wallpaper
+directory like this.
 
 ::
 
-    metalgamer.util.randomwallpaper()
+    metalgamer.util.randomwallpaper({ wallpaperdir = "/home/dennis/.config/awesome/wallpapers/" })
 
+You can also declare the minimum timeout and the maximum timeout between which the wallpaper should change.
+
+::
+
+    metalgamer.util.randomwallpaper({ wallpaperdir = "/home/dennis/.config/awesome/wallpapers/", mintimeout = 60, maxtimeout = 120 })
+
+The defaults of these two variables are as following:
+
+::
+    
+    .mintimeout = 300 seconds
+    .maxtimeout = 600 seconds
 
 For more clarity look into my ``rc.lua`` `here <https://github.com/the-metalgamer/Evolution-Dotfile/blob/master/.config/awesome/rc.lua>`_.

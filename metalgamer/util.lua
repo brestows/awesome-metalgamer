@@ -20,9 +20,6 @@ local timer = timer
 
 module("metalgamer.util")
 
-
-wallpaperdir = ""
-
 -- Read the first line of a file or return nil
 -- Taken from vain.util
 
@@ -143,7 +140,11 @@ end
 
 -- Random Wallpaper
 
-function randomwallpaper()
+function randomwallpaper(args)
+    local args = args or {}
+    local wallpaperdir = args.wallpaperdir
+    local mintimeout = args.mintimeout or 300
+    local maxtimeout = args.maxtimeout or 600
     
     -- seed and "pop a few"
     math.randomseed( os.time() )
@@ -171,7 +172,7 @@ function randomwallpaper()
                 -- define the intervall in which the next wallpaper change
                 -- should occur in seconds
                 -- in this casew anytime between 5 and 10 minutes
-                x = math.random(300,600)
+                x = math.random(mintimeout,maxtimeout)
                 
                 randomwallpapertimer.timeout = x
                 
