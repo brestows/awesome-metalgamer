@@ -3,12 +3,16 @@ local wibox = wibox
 local timer = timer
 local string = string
 local beautiful = beautiful
+local naughty = naughty
 local image = image
 local io = io
 local math = math
 local os = os
 local pairs = pairs
 local tonumber = tonumber
+local lfs = lfs
+local table = table
+local ipairs = ipairs
 local metalgamer = metalgamer
 
 module("metalgamer.widgets")
@@ -150,6 +154,64 @@ function extip(args)
             ) 
 
     return myextip
+end
+
+-- Netcfg
+function netcfg(args)
+    local args = args or {}
+    local refresh_timeout = args.timeout or 600
+    local prefix = args.prefix or "Netcfg: "
+    local command = "sudo netcfg "
+    local mynetcfg = wibox.widget.textbox()
+    local mynetcfgupdate = function ()
+        local profiles = {}
+        local active_profiles = {}
+
+        local f = io.popen("find /etc/network.d/ -maxdepth 1 -type f | grep -v wpaconf | cut -b 16-")
+
+        for line in f:lines() do
+            if line ~= nil then
+                table.insert(profiles, line)
+            end
+        end
+        f:close()
+
+        local f = io.popen("ls -1 /run/network/profiles")
+        for line in f:lines() do
+            if line ~= nil then
+                table.insert(active_profiles, line)
+            end
+        end
+        f:close()
+
+        local menuitems = {}
+
+        for key,file in ipairs(profiles) do
+            item = {}
+            table.insert(item, file)
+            table.insert(item, command .. file)
+            table.insert(menuitems, item)
+        end
+
+        netcfgmenu = awful.menu({items = menuitems})
+
+        local text = prefix .. (active_profiles[1] or "N/A") 
+
+        mynetcfg:set_text(text)
+    end
+    mynetcfgupdate()
+
+    local mynetcfgtimer = timer({ timeout = refresh_timeout })
+    mynetcfgtimer:connect_signal("timeout", mynetcfgupdate)
+    mynetcfgtimer:start()
+
+    mynetcfg:buttons(awful.util.table.join(
+                awful.button({}, 1, function() mynetcfgupdate() end),
+                awful.button({}, 3, function() netcfgmenu:toggle() end)
+                )
+            ) 
+
+    return mynetcfg
 end
 
 -- Running processes
@@ -396,7 +458,7 @@ function battery(args)
             local hrs = math.floor(time_rat)
             local min = (time_rat - hrs) * 60
             local time = string.format("%02d:%02d", hrs,min)
-
+            
             local perc = string.format("%d%%", (rem / tot) * 100)
             text = status .. " " .. perc .. " " .. time
 
@@ -406,6 +468,7 @@ function battery(args)
 
         mybattery:set_text(text)
     end
+    
     mybatteryupdate()
     
     local mybatterytimer = timer({ timeout = refersh_timeout })
@@ -420,3 +483,4 @@ function battery(args)
 
     return mybattery
 end
+

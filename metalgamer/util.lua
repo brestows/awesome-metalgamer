@@ -181,4 +181,3 @@ function randomwallpaper(args)
     )
     randomwallpapertimer:start()
 end
-

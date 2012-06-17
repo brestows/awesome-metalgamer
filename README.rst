@@ -204,6 +204,50 @@ A click on the widget will call the following:
 
 **Attention:** This widget will make your startup slower due it needs to connect to an server.
 
+Netcfg:
+=======
+
+Shows the current used netcfg profile, using ``/run/network/profiles/`` and
+``/etc/network.d/``
+
+::
+    mynetcfg = metalgamer.widgets.netcfg()
+
+This function takes a table as an optional argument. That table may contain:
+
+::
+    .timeout: When should the widget be updates. Defaults to 600 seconds
+    .prefix: Which prefix should be displayed. Defaults to Netcfg: .
+
+Returns a textbox with the following information.
+
+::
+    PREFIX Current used netcfg profile
+
+A click widget will do the following:
+
+    - Left mouse button: Update the widget
+    - Right mouse button: Shows menu with possible profiles. A left click on one of these, will call ``sudo netcfg NAME OF PROFILE``
+
+To get the menu working, you have to change your ``sudoers`` file with
+``visudo``, to allow running netcfg without entereing a password. Add the
+following into your ``sudoers`` file:
+
+::
+    "YOUR USERNAME" (without the quotes) ALL = NOPASSWD: /usr/bin/netcfg
+
+
+
+**Example:**
+
+::
+    mynetcfg = metalgamer.widgets.netcfg()
+
+    Returns:
+
+    Netcfg: spacenet-kali
+
+
 Running processes:
 ==================
 
