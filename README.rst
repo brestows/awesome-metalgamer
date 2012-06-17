@@ -211,17 +211,20 @@ Shows the current used netcfg profile, using ``/run/network/profiles/`` and
 ``/etc/network.d/``
 
 ::
+
     mynetcfg = metalgamer.widgets.netcfg()
 
 This function takes a table as an optional argument. That table may contain:
 
 ::
+
     .timeout: When should the widget be updates. Defaults to 600 seconds
     .prefix: Which prefix should be displayed. Defaults to Netcfg: .
 
 Returns a textbox with the following information.
 
 ::
+
     PREFIX Current used netcfg profile
 
 A click widget will do the following:
@@ -234,6 +237,7 @@ To get the menu working, you have to change your ``sudoers`` file with
 following into your ``sudoers`` file:
 
 ::
+
     "YOUR USERNAME" (without the quotes) ALL = NOPASSWD: /usr/bin/netcfg
 
 
@@ -241,6 +245,7 @@ following into your ``sudoers`` file:
 **Example:**
 
 ::
+
     mynetcfg = metalgamer.widgets.netcfg()
 
     Returns:
