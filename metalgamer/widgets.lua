@@ -423,7 +423,8 @@ function battery(args)
     local mybatteryupdate = function()
         
         local first_line = metalgamer.util.first_line
-    
+        local file_exists = metalgamer.util.exists
+        
         local present = first_line("/sys/class/power_supply/" .. bat .. "/present")
         if present == "1"
         then
@@ -431,10 +432,25 @@ function battery(args)
             local rate = first_line("/sys/class/power_supply/" .. bat .. "/current_now")
 
             local ratev = first_line("/sys/class/power_supply/" .. bat .. "/voltage_now")
+            
+            local check = file_exists("/sys/class/power_supply/" .. bat .. "/charge_now")
 
-            local rem = first_line("/sys/class/power_supply/" .. bat .. "/charge_now")
+            if check  == "1" then
+                rem = first_line("/sys/class/power_supply/" .. bat .. "/charge_now")
+            elseif check == "0" then
+                rem = first_line("/sys/class/power_supply/" .. bat .. "/energy_now")
+            else
+                rem = 1
+            end
 
-            local tot = first_line("/sys/class/power_supply/" .. bat .. "/charge_full")
+
+            if check == "1" then
+                tot = first_line("/sys/class/power_supply/" .. bat .. "/charge_full")
+            elseif check == "0" then
+                tot = first_line("/sys/class/power_supply/" .. bat .. "/energy_full")
+            else
+                tot = 1
+            end
 
             local status = first_line("/sys/class/power_supply/" .. bat .. "/status")
 

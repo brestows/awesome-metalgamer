@@ -22,7 +22,6 @@ module("metalgamer.util")
 
 -- Read the first line of a file or return nil
 -- Taken from vain.util
-
 function first_line(f)
     local fp = io.open(f)
 
@@ -42,7 +41,6 @@ end
 -- @param cmd the command to execute
 -- @param properties a table of properties to match against clients. Possible
 -- entries: any properties of the client object
-
 function run_or_raise(cmd, properties)
     local clients = client.get()
     local focused = awful.client.next(0)
@@ -98,8 +96,7 @@ function match (table1, table2)
     return true
 end
 
--- {{{ Run program once
-
+-- Run program once
 local function processwalker()
     local function yieldprocess()
         for dir in lfs.dir("/proc") do
@@ -136,10 +133,8 @@ function run_once(process, cmd)
     end
     return awful.util.spawn(cmd or process)
 end
---- }}}
 
 -- Random Wallpaper
-
 function randomwallpaper(args)
     local args = args or {}
     local wallpaperdir = args.wallpaperdir
@@ -166,12 +161,11 @@ function randomwallpaper(args)
                 awful.util.spawn("awsetbg -F -r " .. wallpaperdir, false)
                 
                 --stop the time (we don't need multiple instances running at
-                    --the same time)
+                --the same time)
                 randomwallpapertimer:stop()
                 
                 -- define the intervall in which the next wallpaper change
                 -- should occur in seconds
-                -- in this casew anytime between 5 and 10 minutes
                 x = math.random(mintimeout,maxtimeout)
                 
                 randomwallpapertimer.timeout = x
@@ -180,4 +174,13 @@ function randomwallpaper(args)
                 end
     )
     randomwallpapertimer:start()
+end
+
+
+function exists(file)
+    if lfs.attributes(file, "mode") == "file" then
+        return "1" 
+    else
+        return "0"
+    end
 end
