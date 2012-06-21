@@ -429,7 +429,16 @@ function battery(args)
         if present == "1"
         then
         
-            local rate = first_line("/sys/class/power_supply/" .. bat .. "/current_now")
+            local powercheck = file_exists("/sys/class/power_supply" .. bat .. "/current_now")
+
+            if powercheck == "1" then
+        
+                rate = first_line("/sys/class/power_supply/" .. bat .. "/current_now")
+            elseif check == "0" then
+                rate = first_line("/sys/class/power_supply/" .. bat .. "/power_now")
+            else
+                rate = 1
+            end
 
             local ratev = first_line("/sys/class/power_supply/" .. bat .. "/voltage_now")
             
