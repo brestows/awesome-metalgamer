@@ -255,6 +255,8 @@ function governor(args)
     local cpu = args.cpu or "cpu0"
     local refresh_timeout = args.timeout or 61
     local prefix = args.prefix or "cpu0: "
+    local command = "sudo cpufreq-set -r -g "
+
 
     local mygovernor = wibox.widget.textbox()
     local mygovernorupdate = function()
@@ -262,6 +264,23 @@ function governor(args)
         local governor = f:read("*all")
         f:close()
         
+        local f = io.open("/sys/devices/system/cpu/".. cpu .. "/cpufreq/scaling_available_governors")
+        local content = f:read("*all")
+        f:close()
+
+        local governors = metalgamer.utils.split(content, " ")
+
+        local menuitems = {}
+
+        for key, file in ipairs(governors) do
+            item = {}
+            table.insert(item, file)
+            table.insert(item, command .. file)
+            table.insert(menuitems, item)
+    
+        governormenu = awful.menu({items = menuitems})    
+        
+
         local text = prefix .. governor
         mygovernor:set_text(text)
     end
@@ -273,7 +292,8 @@ function governor(args)
     
     mygovernor:buttons(awful.util.table.join(
                 awful.button({}, 1, function()
-                    mygovernorupdate() end)
+                    mygovernorupdate() end),
+                awful.button({}, 3, function() governormenu:toggle() end)
                 )
             )
 
@@ -434,7 +454,7 @@ function battery(args)
             if powercheck == "1" then
         
                 rate = first_line("/sys/class/power_supply/" .. bat .. "/current_now")
-            elseif check == "0" then
+            elseif powercheck == "0" then
                 rate = first_line("/sys/class/power_supply/" .. bat .. "/power_now")
             else
                 rate = 1
