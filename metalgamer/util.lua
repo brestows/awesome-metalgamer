@@ -184,3 +184,12 @@ function exists(file)
         return "0"
     end
 end
+
+function split(string, sep):
+        local sep, fields = sep or ":", {}
+        local pattern = string.format("([^%s]+)", sep)
+        local string = string
+        string:gsub(pattern, function(c) fields[#fields+1] = c end)
+        return fields
+end
+
